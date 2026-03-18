@@ -58,7 +58,7 @@ export function SessionsTable({ sessions, onSessionClick }: SessionsTableProps) 
                     {session.userId || 'N/A'}
                   </td>
                   <td className="px-6 py-4 font-mono text-xs text-slate-300">
-                    {session.sessionId.substring(0, 15)}...
+                    {session.sessionId ? `${session.sessionId.substring(0, 15)}...` : 'N/A'}
                   </td>
                   <td className="px-6 py-4 text-slate-300">
                     {format(new Date(session.timestamp), 'MMM dd, HH:mm')}
@@ -83,9 +83,9 @@ export function SessionsTable({ sessions, onSessionClick }: SessionsTableProps) 
                   <td className="px-6 py-4">
                     <span className={cn(
                       'text-xs font-mono',
-                      session.totalTokens > 0 ? 'text-cyan-400' : 'text-slate-500'
+                      (session.totalTokens || 0) > 0 ? 'text-cyan-400' : 'text-slate-500'
                     )}>
-                      {session.totalTokens > 0 ? session.totalTokens.toLocaleString() : '-'}
+                      {(session.totalTokens || 0) > 0 ? (session.totalTokens || 0).toLocaleString() : '-'}
                     </span>
                   </td>
                   <td className="px-6 py-4">
@@ -97,7 +97,7 @@ export function SessionsTable({ sessions, onSessionClick }: SessionsTableProps) 
                     </div>
                   </td>
                   <td className="px-6 py-4 text-slate-300">
-                    {session.sessionDurationSeconds
+                    {session.sessionDurationSeconds && session.sessionDurationSeconds > 0
                       ? `${session.sessionDurationSeconds.toFixed(1)}s`
                       : 'N/A'}
                   </td>
