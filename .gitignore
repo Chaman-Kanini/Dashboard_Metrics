@@ -49,6 +49,10 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Keep .env.example and .env.production as templates
+!.env.example
+!frontend/.env.production
+
 # Logs
 *.log
 logs/

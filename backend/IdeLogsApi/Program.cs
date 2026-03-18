@@ -13,13 +13,22 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+// Configure CORS for development and production
+var allowedOrigins = builder.Configuration.GetValue<string>("ALLOWED_ORIGINS")
+    ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+    ?? Array.Empty<string>();
+
+var corsOrigins = new List<string> { "http://localhost:5173", "http://localhost:3000" };
+corsOrigins.AddRange(allowedOrigins);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.WithOrigins(corsOrigins.ToArray())
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 

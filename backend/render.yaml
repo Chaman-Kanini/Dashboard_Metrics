@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: dashboard-metrics-api
+    runtime: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./backend/IdeLogsApi/Dockerfile
+    dockerContext: ./backend/IdeLogsApi
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
