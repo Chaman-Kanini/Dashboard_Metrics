@@ -20,6 +20,10 @@ CREATE TABLE IF NOT EXISTS sessions (
     health_status VARCHAR(50),
     session_duration_seconds DECIMAL(10, 2),
     langfuse_trace_id VARCHAR(255),
+    user_id VARCHAR(255),
+    input_tokens INTEGER DEFAULT 0,
+    output_tokens INTEGER DEFAULT 0,
+    total_tokens INTEGER DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW(),
     CONSTRAINT unique_session_source UNIQUE (session_id, source)
