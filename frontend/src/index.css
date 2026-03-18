@@ -7,14 +7,20 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0f172a;
+  color-scheme: light;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #f8fafc;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Kanini Brand Colors */
+  --kanini-blue: #0088CE;
+  --kanini-cyan: #00A8E4;
+  --kanini-lime: #BDDA57;
+  --kanini-light-cyan: #68CEF2;
 }
 
 body {
@@ -24,10 +30,10 @@ body {
 
 @layer components {
   .card {
-    @apply bg-slate-800 rounded-lg shadow-lg p-6 border border-slate-700;
+    @apply bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:border-[#00A8E4] transition-colors duration-200;
   }
 
   .stat-card {
-    @apply card hover:border-primary-500 transition-colors duration-200;
+    @apply card;
   }
 }

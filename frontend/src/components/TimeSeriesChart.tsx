@@ -25,38 +25,39 @@ export function TimeSeriesChart({ data }: TimeSeriesChartProps) {
 
   return (
     <div className="card">
-      <h3 className="text-xl font-semibold text-white mb-4">Session Activity Over Time</h3>
+      <h3 className="text-xl font-semibold text-gray-900 mb-4">Session Activity Over Time</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={mergedData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-          <XAxis dataKey="date" stroke="#94a3b8" />
-          <YAxis stroke="#94a3b8" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <XAxis dataKey="date" stroke="#6b7280" />
+          <YAxis stroke="#6b7280" />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#1e293b',
-              border: '1px solid #334155',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e5e7eb',
               borderRadius: '0.5rem',
+              color: '#111827',
             }}
           />
           <Legend />
           <Line
             type="monotone"
             dataKey="windsurfSessions"
-            stroke="#0ea5e9"
+            stroke="#00A8E4"
             name="Windsurf Sessions"
             strokeWidth={2}
           />
           <Line
             type="monotone"
             dataKey="vscodeSessions"
-            stroke="#8b5cf6"
+            stroke="#BDDA57"
             name="VS Code Sessions"
             strokeWidth={2}
           />
           <Line
             type="monotone"
             dataKey="windsurfErrors"
-            stroke="#ef4444"
+            stroke="#dc2626"
             name="Windsurf Errors"
             strokeWidth={2}
             strokeDasharray="5 5"
@@ -64,7 +65,7 @@ export function TimeSeriesChart({ data }: TimeSeriesChartProps) {
           <Line
             type="monotone"
             dataKey="vscodeErrors"
-            stroke="#f97316"
+            stroke="#ea580c"
             name="VS Code Errors"
             strokeWidth={2}
             strokeDasharray="5 5"
