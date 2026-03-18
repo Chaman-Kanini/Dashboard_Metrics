@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Activity, AlertCircle, Database, TrendingUp } from 'lucide-react';
 import { StatCard } from './components/StatCard';
 import { TimeSeriesChart } from './components/TimeSeriesChart';
 import { SessionsTable } from './components/SessionsTable';
 import { KaniniLogo } from './components/KaniniLogo';
+import { Filters } from './components/Filters';
 import { dashboardApi } from './services/api';
 import { formatSourceName } from './utils/formatters';
 import type { DashboardSummary, Session, TimeSeriesData, Stats } from './types';
@@ -15,6 +16,8 @@ function App() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<string>('all');
+  const [selectedSource, setSelectedSource] = useState<string>('all');
 
   const fetchData = async () => {
     try {
@@ -46,7 +49,35 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const totalSummary = summary.reduce(
+  // Extract unique users and sources from sessions
+  const availableUsers = useMemo(() => {
+    const users = sessions
+      .map(s => s.userId)
+      .filter((user): user is string => !!user);
+    return Array.from(new Set(users)).sort();
+  }, [sessions]);
+
+  const availableSources = useMemo(() => {
+    const sources = sessions.map(s => s.source);
+    return Array.from(new Set(sources)).sort();
+  }, [sessions]);
+
+  // Filter sessions based on selected filters
+  const filteredSessions = useMemo(() => {
+    return sessions.filter(session => {
+      const matchesUser = selectedUser === 'all' || session.userId === selectedUser;
+      const matchesSource = selectedSource === 'all' || session.source === selectedSource;
+      return matchesUser && matchesSource;
+    });
+  }, [sessions, selectedUser, selectedSource]);
+
+  // Filter summary based on selected source
+  const filteredSummary = useMemo(() => {
+    if (selectedSource === 'all') return summary;
+    return summary.filter(item => item.source === selectedSource);
+  }, [summary, selectedSource]);
+
+  const totalSummary = filteredSummary.reduce(
     (acc, curr) => ({
       totalSessions: acc.totalSessions + curr.totalSessions,
       totalEvents: acc.totalEvents + curr.totalEvents,
@@ -55,6 +86,11 @@ function App() {
     }),
     { totalSessions: 0, totalEvents: 0, totalErrors: 0, totalWarnings: 0 }
   );
+
+  const handleResetFilters = () => {
+    setSelectedUser('all');
+    setSelectedSource('all');
+  };
 
   if (loading && !stats) {
     return (
@@ -85,6 +121,16 @@ function App() {
           </div>
         </header>
 
+        <Filters
+          selectedUser={selectedUser}
+          selectedSource={selectedSource}
+          users={availableUsers}
+          sources={availableSources}
+          onUserChange={setSelectedUser}
+          onSourceChange={setSelectedSource}
+          onReset={handleResetFilters}
+        />
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             title="Total Sessions"
@@ -110,7 +156,7 @@ function App() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {summary.map((item) => (
+          {filteredSummary.map((item) => (
             <div key={item.source} className="card">
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 {formatSourceName(item.source)} Summary
@@ -161,7 +207,7 @@ function App() {
           <TimeSeriesChart data={timeSeries} />
         </div>
 
-        <SessionsTable sessions={sessions} />
+        <SessionsTable sessions={filteredSessions} />
       </div>
     </div>
   );
