@@ -36,13 +36,13 @@ class EventModel(Base):
     __tablename__ = "events"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    session_id = Column(UUID(as_uuid=True), ForeignKey("sessions.id", ondelete="CASCADE"), nullable=False)
+    session_id = Column(UUID(as_uuid=True), ForeignKey("sessions.id"), nullable=False)
     timestamp = Column(DateTime, nullable=False)
     level = Column(String(20), nullable=False)
     message = Column(Text, nullable=False)
     source_file = Column(String(255), nullable=True)
     event_hash = Column(String(64), nullable=False, unique=True)
-    metadata = Column(Text, nullable=True)
+    event_metadata = Column('metadata', Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     session = relationship("SessionModel", back_populates="events")
