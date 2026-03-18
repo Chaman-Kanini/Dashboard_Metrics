@@ -1,13 +1,13 @@
 services:
   - type: web
     name: dashboard-metrics-api
-    runtime: docker
-    dockerfilePath: ./backend/IdeLogsApi/Dockerfile
-    dockerContext: ./backend/IdeLogsApi
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    rootDir: backend-fastapi
     envVars:
-      - key: ASPNETCORE_ENVIRONMENT
-        value: Production
-      - key: ConnectionStrings__DefaultConnection
+      - key: DATABASE_URL
         sync: false
       - key: ALLOWED_ORIGINS
         sync: false
