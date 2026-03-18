@@ -22,7 +22,7 @@ app = FastAPI(title="IDE Logs Dashboard API", version="1.0.0")
 
 # CORS configuration
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "").split(",") if os.getenv("ALLOWED_ORIGINS") else []
-origins = ["http://localhost:5173", "http://localhost:3000"] + allowed_origins
+origins = ["http://localhost:5173", "http://localhost:3000","https://dashboard-metrics-liart.vercel.app"] + allowed_origins
 
 app.add_middleware(
     CORSMiddleware,
