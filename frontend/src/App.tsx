@@ -87,23 +87,23 @@ function App() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             title="Total Sessions"
-            value={totalSummary.totalSessions.toLocaleString()}
+            value={(totalSummary.totalSessions || 0).toLocaleString()}
             icon={Activity}
           />
           <StatCard
             title="Total Events"
-            value={totalSummary.totalEvents.toLocaleString()}
+            value={(totalSummary.totalEvents || 0).toLocaleString()}
             icon={Database}
           />
           <StatCard
             title="Total Errors"
-            value={totalSummary.totalErrors.toLocaleString()}
+            value={(totalSummary.totalErrors || 0).toLocaleString()}
             icon={AlertCircle}
             className="border-red-500/20"
           />
           <StatCard
             title="Recent Errors (24h)"
-            value={stats?.recentErrors.toLocaleString() || '0'}
+            value={(stats?.recentErrors || 0).toLocaleString()}
             icon={TrendingUp}
           />
         </div>
@@ -134,7 +134,7 @@ function App() {
                 <div>
                   <p className="text-sm text-slate-400">Total Tokens</p>
                   <p className="text-2xl font-bold text-cyan-400">
-                    {item.totalTokens > 0 ? item.totalTokens.toLocaleString() : '-'}
+                    {(item.totalTokens || 0) > 0 ? (item.totalTokens || 0).toLocaleString() : '-'}
                   </p>
                 </div>
                 <div>
