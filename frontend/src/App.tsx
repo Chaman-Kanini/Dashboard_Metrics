@@ -5,6 +5,7 @@ import { TimeSeriesChart } from './components/TimeSeriesChart';
 import { SessionsTable } from './components/SessionsTable';
 import { KaniniLogo } from './components/KaniniLogo';
 import { dashboardApi } from './services/api';
+import { formatSourceName } from './utils/formatters';
 import type { DashboardSummary, Session, TimeSeriesData, Stats } from './types';
 
 function App() {
@@ -75,11 +76,11 @@ function App() {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8 flex items-center gap-6">
-          <KaniniLogo className="h-16 w-auto" />
+          <KaniniLogo className="h-8 w-auto" />
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">IDE Logs Dashboard</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">AI Usage Dashboard</h1>
             <p className="text-gray-600">
-              Monitor Windsurf and VS Code Copilot logs in real-time
+              Monitor multi platform AI usage logs in real-time
             </p>
           </div>
         </header>
@@ -111,8 +112,8 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {summary.map((item) => (
             <div key={item.source} className="card">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4 capitalize">
-                {item.source.replace('_', ' ')} Summary
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                {formatSourceName(item.source)} Summary
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>

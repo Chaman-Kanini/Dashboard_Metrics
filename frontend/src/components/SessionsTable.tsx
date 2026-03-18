@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { AlertCircle, AlertTriangle, CheckCircle, Info } from 'lucide-react';
 import type { Session } from '../types';
 import { cn } from '../utils/cn';
+import { formatSourceName } from '../utils/formatters';
 
 interface SessionsTableProps {
   sessions: Session[];
@@ -51,7 +52,7 @@ export function SessionsTable({ sessions, onSessionClick }: SessionsTableProps) 
                       'px-2 py-1 rounded text-xs font-medium',
                       session.source === 'windsurf' ? 'bg-secondary-100 text-secondary-700' : 'bg-purple-100 text-purple-700'
                     )}>
-                      {session.source}
+                      {formatSourceName(session.source)}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-gray-700 text-sm">
