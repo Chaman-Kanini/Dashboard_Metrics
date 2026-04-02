@@ -1,18 +1,16 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Activity, AlertCircle, Database, TrendingUp } from 'lucide-react';
 import { StatCard } from './components/StatCard';
-import { TimeSeriesChart } from './components/TimeSeriesChart';
 import { SessionsTable } from './components/SessionsTable';
 import { KaniniLogo } from './components/KaniniLogo';
 import { Filters } from './components/Filters';
 import { dashboardApi } from './services/api';
 import { formatSourceName } from './utils/formatters';
-import type { DashboardSummary, Session, TimeSeriesData, Stats } from './types';
+import type { DashboardSummary, Session, Stats } from './types';
 
 function App() {
   const [summary, setSummary] = useState<DashboardSummary[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]);
-  const [timeSeries, setTimeSeries] = useState<TimeSeriesData[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,10 +22,9 @@ function App() {
       setLoading(true);
       setError(null);
 
-      const [summaryData, sessionsData, timeSeriesData, statsData] = await Promise.all([
+      const [summaryData, sessionsData, statsData] = await Promise.all([
         dashboardApi.getSummary(),
         dashboardApi.getRecentSessions(20),
-        dashboardApi.getTimeSeries(7),
         dashboardApi.getStats(),
       ]);
 
@@ -50,7 +47,6 @@ function App() {
 
       setSummary(fixedSummary);
       setSessions(fixedSessions);
-      setTimeSeries(timeSeriesData);
       setStats(statsData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch data');
@@ -218,10 +214,6 @@ function App() {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="mb-8">
-          <TimeSeriesChart data={timeSeries} />
         </div>
 
         <SessionsTable sessions={filteredSessions} />
